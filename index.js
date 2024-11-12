@@ -30,7 +30,7 @@ connection.connect();
 //GET request and response are the parameters
 app.get("/api/members", (req, res) =>{
     //create a query
-    connection.query("SELECT * FROM userdata",(err, rows, fields)=>{
+    connection.query("SELECT * FROM product",(err, rows, fields)=>{
         //checking errors
         if(err) throw err;
         //response
