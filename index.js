@@ -28,7 +28,7 @@ connection.connect();
 
 //API - REPORT
 //GET request and response are the parameters
-app.get("/api/members", (req, res) =>{
+app.get("/api/products", (req, res) =>{
     //create a query
     connection.query("SELECT * FROM product",(err, rows, fields)=>{
         //checking errors
@@ -42,7 +42,7 @@ app.get("/api/members", (req, res) =>{
 //API - REPORT - SEARCH
 //passing the id parameter
 //request - >>> front-end ID
-app.get("/api/members/:id",(req, res)=>{
+app.get("/api/products/:id",(req, res)=>{
     const id=req.params.id; 
     connection.query(`SELECT * FROM product WHERE id='${id}'`, (err, rows, fields)=>{
         if(err) throw err;
@@ -58,7 +58,7 @@ app.get("/api/members/:id",(req, res)=>{
 
 //DELETE API
 app.use(express.urlencoded({ extended: false}));
-app.delete("/api/members", (req, res) =>{
+app.delete("/api/products", (req, res) =>{
     const id=req.body.id;
     connection.query(`DELETE FROM product`, (err, rows, fields)=>{
         if(err) throw err
