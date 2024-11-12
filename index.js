@@ -1,20 +1,20 @@
 //instantiation
-//import express API framework
 const express = require("express")
-const app = express();
-const moment = require('moment')
-//importing mysql
-const mysql = require("mysql")
-//port number
-const PORT = process.env.PORT || 5000;
+const app=express()
+const mysql= require("mysql")
+const moment=require("moment")
+const PORT = process.env. PORT || 5000
 
-const logger = (req, res, next) =>{
-    console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}:${moment().format()} `)
-    next()
+
+const logger= (req,res,next) =>{
+    console.log(
+        ${req.protocol}://${req.get("host")}${req.originalUrl} : ${moment().format()}
+    )
+    next();
 }
+app.use(logger);
 
-app.use(logger)
-//connection to mysql
+
 const connection = mysql.createConnection({
     host: "bmix5lkljpjozaesn25j-mysql.services.clever-cloud.com",
     user: "ucxd8z4ufrksc4cm",
@@ -22,55 +22,69 @@ const connection = mysql.createConnection({
     database: "bmix5lkljpjozaesn25j",
 });
 
-//initilization of connection
 connection.connect();
-
-
-//API - REPORT
-//GET request and response are the parameters
-app.get("/api/products", (req, res) =>{
-    //create a query
-    connection.query("SELECT * FROM product_info",(err, rows, fields)=>{
-        //checking errors
+//REPORT-CRUD
+app.get("/api/products", (req,res) =>{
+    connection.query("SELECT * FROM product",(err,rows,fields) =>{
         if(err) throw err;
-        //response
-        //key value pair
-        res.json(rows);
-    });
-});
+        res.json(rows)
+    })
+})
 
-//API - REPORT - SEARCH
-//passing the id parameter
-//request - >>> front-end ID
-app.get("/api/products/:id",(req, res)=>{
-    const id=req.params.id; 
-    connection.query(`SELECT * FROM product_info WHERE id='${id}'`, (err, rows, fields)=>{
-        if(err) throw err;
-
-        if(rows.length > 0){
-            res.json(rows);
+//REPORT-CRUD SEARCH
+app.get("/api/products/:id", (req,res) =>{
+    const id=req.params.id
+    //res.send(id)
+    connection.query(SELECT * FROM product WHERE id=${id}, (err,rows, fields)=>{
+        if(err) throw err
+        if(rows.lenght > 0){
+        res.json(rows)
         }else{
-            res.status(400).json({msg: `${id} id not found!`})
+            res.status(400).json({msg:`${id} id not found`})
         }
     })
-    //res.send(id);
+})
+
+//POST
+//CREATE - CRUD
+app.use(express.urlencoded({extended:false}))
+app.post("/api/products", (req, res) =>{
+    const itemname = req.body.itemname; //Juan
+    const unitprice = req.body.unitprice; //DelaCruz
+    const quantity = req.body.quantity; //juan@gmail.com
+    const supplier =req.body.supplier; //male
+    connection.query(INSERT INTO product (itemName, unitPrice, quantity, supplier) VALUES ('${itemname}','${unitprice}','${quantity}','${supplier}'),
+        (err,rows,fields)=>{
+            if(err) throw err;
+            res.json({msg: `Succesfully insert`})
+        }
+    )
+})
+
+app.use(express.urlencoded({extended:false}))
+app.put("/api/products",(req,res) =>{S
+    const itemname = req.body.itemname; //Juan
+    const unitprice = req.body.unitprice; //DelaCruz
+    const quantity = req.body.quantity; //juan@gmail.com
+    const supplier =req.body.supplier; //male
+    const id=req.body.id;
+    connection.query(UPDATE product SET itemName='${itemname}', unitPrice='${unitprice}',quantity='${quantity}',supplier='${supplier}' WHERE id='${id}',(err,rows,fields)=>{
+        if(err) throw err
+        res.json({msg: `Successfully Updated!`})
+    })
 })
 
 
-//POST - CREATE
-app.use(express.urlencoded({extended: false}))
-app.post("/api/products", (req, res)=>{
-    const itname = req.body.itname;
-    const unprice = req.body.unprice;
-    const quant = req.body.quant;
-    const supl = req.body.supl;
-    connection.query(`INSERT INTO product_info (itemNAME, unitPRICE, quantity, supplier) VALUES ('${fname}','${lname}', '${email}', '${gender}')`, (err, rows, fields) =>{
+//DELETE
+app.use(express.urlencoded({extended:false}))
+app.delete("/api/products",(req,res) =>{
+    const id=req.body.id;
+    HTMLFormControlsCollection.query(DELETE FROM product WHERE id='${id}'),(err,rows,fields)=>{
         if(err) throw err;
-        res.json({msg: `Successfully inserted`});
-    })
-
+        res.json({msg: `Succesfully Deleted`})
+    }
 })
 
 app.listen(5000, () => {
-    console.log(`Server is running in port ${PORT}`);
+    console.log(Server is running in port ${PORT})
 })
