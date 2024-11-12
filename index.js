@@ -30,7 +30,7 @@ connection.connect();
 //GET request and response are the parameters
 app.get("/api/products", (req, res) =>{
     //create a query
-    connection.query("SELECT * FROM product",(err, rows, fields)=>{
+    connection.query("SELECT * FROM product_info",(err, rows, fields)=>{
         //checking errors
         if(err) throw err;
         //response
@@ -44,7 +44,7 @@ app.get("/api/products", (req, res) =>{
 //request - >>> front-end ID
 app.get("/api/products/:id",(req, res)=>{
     const id=req.params.id; 
-    connection.query(`SELECT * FROM product WHERE id='${id}'`, (err, rows, fields)=>{
+    connection.query(`SELECT * FROM product_info WHERE id='${id}'`, (err, rows, fields)=>{
         if(err) throw err;
 
         if(rows.length > 0){
@@ -56,16 +56,20 @@ app.get("/api/products/:id",(req, res)=>{
     //res.send(id);
 })
 
-//DELETE API
-app.use(express.urlencoded({ extended: false}));
-app.delete("/api/products", (req, res) =>{
-    const id=req.body.id;
-    connection.query(`DELETE FROM product`, (err, rows, fields)=>{
-        if(err) throw err
-        res.json({msg: `Successfully deleted!`})
-    })
-})
 
+//POST - CREATE
+app.use(express.urlencoded({extended: false}))
+app.post("/api/products", (req, res)=>{
+    const itname = req.body.itname;
+    const unprice = req.body.unprice;
+    const quant = req.body.quant;
+    const supl = req.body.supl;
+    connection.query(`INSERT INTO product_info (itemNAME, unitPRICE, quantity, supplier) VALUES ('${fname}','${lname}', '${email}', '${gender}')`, (err, rows, fields) =>{
+        if(err) throw err;
+        res.json({msg: `Successfully inserted`});
+    })
+
+})
 
 app.listen(5000, () => {
     console.log(`Server is running in port ${PORT}`);
