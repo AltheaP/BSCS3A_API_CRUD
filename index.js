@@ -16,10 +16,10 @@ const logger = (req, res, next) =>{
 app.use(logger)
 //connection to mysql
 const connection = mysql.createConnection({
-    host: "b5d7zndbquclw5ez6xuk-mysql.services.clever-cloud.com",
-    user: "uruhoojsplrq16yi",
-    password: "Vox25CL3AY3bRFPdeex1",
-    database: "b5d7zndbquclw5ez6xuk",
+    host: "bmix5lkljpjozaesn25j-mysql.services.clever-cloud.com",
+    user: "ucxd8z4ufrksc4cm",
+    password: "pTZyaV36KWhUUaIkL3mE",
+    database: "bmix5lkljpjozaesn25j",
 });
 
 //initilization of connection
@@ -44,7 +44,7 @@ app.get("/api/members", (req, res) =>{
 //request - >>> front-end ID
 app.get("/api/members/:id",(req, res)=>{
     const id=req.params.id; 
-    connection.query(`SELECT * FROM userdata WHERE id='${id}'`, (err, rows, fields)=>{
+    connection.query(`SELECT * FROM product WHERE id='${id}'`, (err, rows, fields)=>{
         if(err) throw err;
 
         if(rows.length > 0){
@@ -56,45 +56,11 @@ app.get("/api/members/:id",(req, res)=>{
     //res.send(id);
 })
 
-
-//POST - CREATE
-app.use(express.urlencoded({extended: false}))
-app.post("/api/members", (req, res)=>{
-    const fname = req.body.fname;
-    const lname = req.body.lname;
-    const email = req.body.email;
-    const gender = req.body.gender;
-    connection.query(`INSERT INTO userdata (first_name, last_name, email, gender) VALUES ('${fname}','${lname}', '${email}', '${gender}')`, (err, rows, fields) =>{
-        if(err) throw err;
-        res.json({msg: `Successfully inserted`});
-    })
-
-})
-
-//CRUD
-//API
-//PUT - UPDATE
-app.use(express.urlencoded({ extended: false }));
-app.put("/api/members", (req, res) => {
-  const fname = req.body.fname;
-  const lname = req.body.lname;
-  const email = req.body.email;
-  const gender = req.body.gender;
-  const id = req.body.id;
-  connection.query(
-    `UPDATE userdata SET first_name='${fname}', last_name='${lname}', email='${email}', gender='${gender}' WHERE id='${id}'`,
-    (err, rows, fields) => {
-      if (err) throw err; 
-      res.json({ msg: `Successfully updated!` });
-    }
-  );
-});
-
 //DELETE API
 app.use(express.urlencoded({ extended: false}));
 app.delete("/api/members", (req, res) =>{
     const id=req.body.id;
-    connection.query(`DELETE FROM userdata WHERE id='${id}'`, (err, rows, fields)=>{
+    connection.query(`DELETE FROM product`, (err, rows, fields)=>{
         if(err) throw err
         res.json({msg: `Successfully deleted!`})
     })
