@@ -18,10 +18,10 @@ app.use(logger)
 app.use(cors())
 //connection to mysql
 const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "employee",
+    host: "bmix5lkljpjozaesn25j-mysql.services.clever-cloud.com",
+    user: "ucxd8z4ufrksc4cm",
+    password: "pTZyaV36KWhUUaIkL3mE",
+    database: "bmix5lkljpjozaesn25j",
 });
 
 //initilization of connection
