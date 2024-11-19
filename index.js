@@ -18,10 +18,10 @@ app.use(logger)
 app.use(cors())
 //connection to mysql
 const connection = mysql.createConnection({
-    host: "bmix5lkljpjozaesn25j-mysql.services.clever-cloud.com",
-    user: "ucxd8z4ufrksc4cm",
-    password: "pTZyaV36KWhUUaIkL3mE",
-    database: "bmix5lkljpjozaesn25j",
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "employee",
 });
 
 //initilization of connection
@@ -30,9 +30,9 @@ connection.connect();
 
 //API - REPORT
 //GET request and response are the parameters
-app.get("/api/products", (req, res) =>{
+app.get("/api/members", (req, res) =>{
     //create a query
-    connection.query("SELECT * FROM product",(err, rows, fields)=>{
+    connection.query("SELECT * FROM userdata",(err, rows, fields)=>{
         //checking errors
         if(err) throw err;
         //response
@@ -44,9 +44,9 @@ app.get("/api/products", (req, res) =>{
 //API - REPORT - SEARCH
 //passing the id parameter
 //request - >>> front-end ID
-app.get("/api/products/:id",(req, res)=>{
+app.get("/api/members/:id",(req, res)=>{
     const id=req.params.id; 
-    connection.query(`SELECT * FROM product WHERE id='${id}'`, (err, rows, fields)=>{
+    connection.query(`SELECT * FROM userdata WHERE id='${id}'`, (err, rows, fields)=>{
         if(err) throw err;
 
         if(rows.length > 0){
@@ -61,12 +61,12 @@ app.get("/api/products/:id",(req, res)=>{
 
 //POST - CREATE
 app.use(express.urlencoded({extended: false}))
-app.post("/api/products", (req, res)=>{
-    const iname = req.body.iname;
-    const uprice = req.body.uprice;
-    const quantity = req.body.quantity;
-    const supplier = req.body.supplier;
-    connection.query(`INSERT INTO product (itemName, unitPrice, quantity, supplier) VALUES ('${iname}','${uprice}', '${quantity}', '${supplier}')`, (err, rows, fields) =>{
+app.post("/api/members", (req, res)=>{
+    const fname = req.body.fname;
+    const lname = req.body.lname;
+    const email = req.body.email;
+    const gender = req.body.gender;
+    connection.query(`INSERT INTO userdata (first_name, last_name, email, gender) VALUES ('${fname}','${lname}', '${email}', '${gender}')`, (err, rows, fields) =>{
         if(err) throw err;
         res.json({msg: `Successfully inserted`});
     })
@@ -77,14 +77,14 @@ app.post("/api/products", (req, res)=>{
 //API
 //PUT - UPDATE
 app.use(express.urlencoded({ extended: false }));
-app.put("/api/products", (req, res) => {
-  const iname = req.body.iname;
-  const uprice = req.body.uprice;
-  const quantity = req.body.quantity;
-  const supplier = req.body.supplier;
+app.put("/api/members", (req, res) => {
+  const fname = req.body.fname;
+  const lname = req.body.lname;
+  const email = req.body.email;
+  const gender = req.body.gender;
   const id = req.body.id;
   connection.query(
-    `UPDATE product SET itemName='${iname}', unitPrice='${uprice}', quantity='${quantity}', supplier='${supplier}' WHERE id='${id}'`,
+    `UPDATE userdata SET first_name='${fname}', last_name='${lname}', email='${email}', gender='${gender}' WHERE id='${id}'`,
     (err, rows, fields) => {
       if (err) throw err; 
       res.json({ msg: `Successfully updated!` });
@@ -94,9 +94,9 @@ app.put("/api/products", (req, res) => {
 
 //DELETE API
 app.use(express.urlencoded({ extended: false}));
-app.delete("/api/products", (req, res) =>{
+app.delete("/api/members", (req, res) =>{
     const id=req.body.id;
-    connection.query(`DELETE FROM product WHERE id='${id}'`, (err, rows, fields)=>{
+    connection.query(`DELETE FROM userdata WHERE id='${id}'`, (err, rows, fields)=>{
         if(err) throw err
         res.json({msg: `Successfully deleted!`})
     })
